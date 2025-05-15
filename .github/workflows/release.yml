@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Extract version from tag
+        id: extract_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Update package versions
+        run: node scripts/version-packages.js ${{ steps.extract_version.outputs.VERSION }}
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Type check
+        run: pnpm test:types
+
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.1.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to NPM
+        run: pnpm -r --filter "./packages/*" --filter "!./packages/example" --filter "!./packages/docs" publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            # FastFrame.js ${{ steps.extract_version.outputs.VERSION }}
+
+            ## Changes
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## Packages
+
+            - @fastframe/core@${{ steps.extract_version.outputs.VERSION }}
+            - @fastframe/compiler@${{ steps.extract_version.outputs.VERSION }}
+            - fastframe-cli@${{ steps.extract_version.outputs.VERSION }}
+            - create-fastframe@${{ steps.extract_version.outputs.VERSION }}
+            - @fastframe/webpack-loader@${{ steps.extract_version.outputs.VERSION }}
+            - @fastframe/rollup-plugin@${{ steps.extract_version.outputs.VERSION }}
+          draft: false
+          prerelease: false

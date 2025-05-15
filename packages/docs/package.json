@@ -1,0 +1,22 @@
+{
+  "name": "@fastframe/docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Documentation for FastFrame.js",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "keywords": [
+    "fastframe",
+    "documentation",
+    "docs"
+  ],
+  "author": "FastFrame Team",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^1.0.0-rc.40",
+    "vue": "^3.3.0"
+  }
+}

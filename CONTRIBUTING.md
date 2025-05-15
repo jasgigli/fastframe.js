@@ -37,6 +37,10 @@ FastFrame.js is organized as a monorepo with the following packages:
 - `packages/core`: Core runtime and reactivity primitives
 - `packages/compiler`: Vite plugin and AST transforms
 - `packages/cli`: Command-line interface
+- `packages/create-fastframe`: Project scaffolding tool
+- `packages/webpack-loader`: Webpack integration
+- `packages/rollup-plugin`: Rollup integration
+- `packages/docs`: Documentation site
 - `packages/example`: Example application
 
 ## Development Workflow
@@ -67,6 +71,30 @@ pnpm build
 pnpm --filter @fastframe/core build
 ```
 
+### Creating a New Package
+
+To create a new package in the monorepo:
+
+```bash
+pnpm create-package package-name
+```
+
+For a scoped package:
+
+```bash
+pnpm create-package package-name --scope @fastframe
+```
+
+### Documentation
+
+When adding new features, please update the relevant documentation in the `packages/docs` directory.
+
+To run the documentation site locally:
+
+```bash
+pnpm docs:dev
+```
+
 ## Pull Request Guidelines
 
 1. Fork the repository and create a branch from `main`.
@@ -91,7 +119,9 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 Example:
 
 ```
+
 feat(core): add computed function
+
 ```
 
 ## Code Style
@@ -101,6 +131,15 @@ We use ESLint and Prettier to enforce code style. Run the following to check and
 ```bash
 pnpm lint
 ```
+
+## Release Process
+
+Releases are managed by the core team. The process involves:
+
+1. Updating version numbers with `pnpm version-packages <version>`
+2. Building all packages with `pnpm build`
+3. Running tests with `pnpm test`
+4. Publishing to npm with `pnpm publish-packages`
 
 ## License
 

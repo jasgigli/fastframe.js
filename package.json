@@ -8,9 +8,18 @@
     "build:js": "node build.js",
     "dev": "pnpm --filter \"./packages/example\" run dev",
     "test": "pnpm --filter \"./packages/*\" run test",
+    "test:types": "pnpm --filter \"./packages/*\" run test:types",
     "lint": "eslint .",
     "clean": "rm -rf packages/*/dist",
-    "publish-packages": "pnpm build && pnpm -r publish"
+    "version-packages": "node scripts/version-packages.js",
+    "publish-packages": "pnpm clean && pnpm version-packages && pnpm build && pnpm -r --filter \"./packages/*\" --filter \"!./packages/example\" --filter \"!./packages/docs\" publish --access public --no-git-checks",
+    "publish-canary": "pnpm clean && pnpm version-packages && pnpm build && pnpm -r --filter \"./packages/*\" --filter \"!./packages/example\" --filter \"!./packages/docs\" publish --access public --tag canary --no-git-checks",
+    "prepare-release": "node scripts/prepare-release.js",
+    "create-package": "node scripts/create-package.js",
+    "create-template": "node scripts/create-template.js",
+    "docs:dev": "pnpm --filter \"@fastframe/docs\" run dev",
+    "docs:build": "pnpm --filter \"@fastframe/docs\" run build",
+    "docs:preview": "pnpm --filter \"@fastframe/docs\" run preview"
   },
   "keywords": [
     "framework",
@@ -20,6 +29,14 @@
   ],
   "author": "FastFrame Team",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fastframejs/fastframe.git"
+  },
+  "homepage": "https://fastframejs.org",
+  "bugs": {
+    "url": "https://github.com/fastframejs/fastframe/issues"
+  },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "eslint": "^8.38.0",

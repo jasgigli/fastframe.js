@@ -25,28 +25,36 @@ const packages = [
   'core',
   'compiler',
   'cli',
+  'webpack-loader',
+  'rollup-plugin',
+  'create-fastframe',
+  'docs',
   'example'
 ];
 
 // Build a package
 function buildPackage(packageName) {
   const packagePath = path.join(__dirname, 'packages', packageName);
-  
+
   // Check if package exists
   if (!fs.existsSync(packagePath)) {
-    console.error(`${colors.red}Package ${packageName} not found${colors.reset}`);
+    console.error(
+      `${colors.red}Package ${packageName} not found${colors.reset}`
+    );
     return false;
   }
-  
-  console.log(`\n${colors.bright}${colors.cyan}Building ${packageName}...${colors.reset}\n`);
-  
+
+  console.log(
+    `\n${colors.bright}${colors.cyan}Building ${packageName}...${colors.reset}\n`
+  );
+
   try {
     // Run build script
     execSync('pnpm run build', {
       cwd: packagePath,
       stdio: 'inherit'
     });
-    
+
     console.log(`${colors.green}✓ Built ${packageName}${colors.reset}`);
     return true;
   } catch (error) {
@@ -58,10 +66,12 @@ function buildPackage(packageName) {
 
 // Build all packages
 async function buildAll() {
-  console.log(`${colors.bright}${colors.magenta}Building FastFrame.js packages...${colors.reset}\n`);
-  
+  console.log(
+    `${colors.bright}${colors.magenta}Building FastFrame.js packages...${colors.reset}\n`
+  );
+
   let success = true;
-  
+
   for (const packageName of packages) {
     const result = buildPackage(packageName);
     if (!result) {
@@ -69,9 +79,11 @@ async function buildAll() {
       break;
     }
   }
-  
+
   if (success) {
-    console.log(`\n${colors.bright}${colors.green}All packages built successfully!${colors.reset}`);
+    console.log(
+      `\n${colors.bright}${colors.green}All packages built successfully!${colors.reset}`
+    );
   } else {
     console.error(`\n${colors.bright}${colors.red}Build failed${colors.reset}`);
     process.exit(1);
