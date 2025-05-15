@@ -1,0 +1,33 @@
+{
+  "name": "@fastframe/core",
+  "version": "0.1.0",
+  "description": "Core runtime and reactivity primitives for FastFrame.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "fastframe",
+    "reactivity",
+    "frontend",
+    "framework"
+  ],
+  "author": "FastFrame Team",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.30.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

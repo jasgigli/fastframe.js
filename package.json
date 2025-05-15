@@ -1,0 +1,30 @@
+{
+  "name": "fastframe",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Next-generation frontend framework with compile-time reactivity",
+  "scripts": {
+    "build": "pnpm --filter \"./packages/*\" run build",
+    "build:js": "node build.js",
+    "dev": "pnpm --filter \"./packages/example\" run dev",
+    "test": "pnpm --filter \"./packages/*\" run test",
+    "lint": "eslint .",
+    "clean": "rm -rf packages/*/dist",
+    "publish-packages": "pnpm build && pnpm -r publish"
+  },
+  "keywords": [
+    "framework",
+    "frontend",
+    "reactive",
+    "typescript"
+  ],
+  "author": "FastFrame Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "eslint": "^8.38.0",
+    "prettier": "^2.8.7",
+    "typescript": "^5.0.4",
+    "vitest": "^0.30.1"
+  }
+}
